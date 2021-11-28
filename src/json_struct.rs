@@ -103,6 +103,8 @@ pub enum Value {
 }
 
 impl Value {
+
+    //将需要的string类型结果转换为float64类型；
     fn to_float64(&mut self) {
         match self {
             Self::ValueString(s) => match s.parse::<f64>() {
@@ -126,7 +128,6 @@ impl Value {
                 }
                 *self = Self::Arrayf64(vec);
             }
-
             _ => {}
         }
     }
