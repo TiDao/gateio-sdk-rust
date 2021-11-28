@@ -1,0 +1,1 @@
+/home/magatron/rust/gateio-sdk-rust/target/debug/websocket: /home/magatron/rust/gateio-sdk-rust/src/functions.rs /home/magatron/rust/gateio-sdk-rust/src/json_struct.rs /home/magatron/rust/gateio-sdk-rust/src/main.rs

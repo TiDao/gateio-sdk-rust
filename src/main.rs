@@ -35,7 +35,6 @@ fn main() {
         }
     });
 
-    println!("test");
 
     thread_handles.push(thread2);
     
