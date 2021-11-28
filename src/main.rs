@@ -35,9 +35,12 @@ fn main() {
         }
     });
 
+    println!("test");
+
     thread_handles.push(thread2);
     
     for handle in thread_handles{
         handle.join().unwrap();
     }
+
 }
