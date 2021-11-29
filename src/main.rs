@@ -14,12 +14,10 @@ use std::thread;
 fn main() {
     let (sender,receiver) :(SyncSender<ServerResponse>,Receiver<ServerResponse>) = sync_channel(100);
     let mut request: ClientRequest = ClientRequest::new();
-    request.channel = "spot.order_book".to_string();
+    request.channel = "spot.tickers".to_string();
     request.event = "subscribe".to_string();
     request.payload = Some(vec![
         "FIL_USDT".to_string(),
-        "20".to_string(),
-        "100ms".to_string(),
     ]);
     
     let mut thread_handles = vec![];
@@ -34,8 +32,6 @@ fn main() {
             println!("{:?}",response);
         }
     });
-
-
     thread_handles.push(thread2);
     
     for handle in thread_handles{

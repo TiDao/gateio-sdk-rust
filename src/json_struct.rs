@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[derive(Serialize, Deserialize, Clone, Debug, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ClientRequest {
     pub time: u64,
 
@@ -74,6 +74,17 @@ pub struct ServerResponse {
 }
 
 impl ServerResponse {
+
+    pub fn new() -> ServerResponse {
+        ServerResponse {
+            time: 0,
+            channel: String::new(),
+            event: String::new(),
+            error: None,
+            result: None,
+        }
+    }
+
     pub fn to_number(&mut self) {
         match &mut self.result {
             None => {
@@ -88,7 +99,7 @@ impl ServerResponse {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize,Debug)]
 #[serde(untagged)]
 pub enum Value {
     Float(f64),
@@ -102,8 +113,10 @@ pub enum Value {
     Bool(bool),
 }
 
-impl Value {
+impl Value{
+}
 
+impl Value {
     //将需要的string类型结果转换为float64类型；
     fn to_float64(&mut self) {
         match self {
@@ -131,19 +144,15 @@ impl Value {
             _ => {}
         }
     }
-}
 
-impl ServerResponse {
-    pub fn new() -> ServerResponse {
-        ServerResponse {
-            time: 0,
-            channel: String::new(),
-            event: String::new(),
-            error: None,
-            result: None,
+    pub fn as_f64(&self) -> Option<f64>{
+        match *self {
+            Self::Float(ref data)  => Some(*data),
+            _ => None,
         }
     }
 }
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ResponseError {
