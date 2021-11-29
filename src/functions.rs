@@ -77,23 +77,19 @@ pub fn send_websocket_response(request: &ClientRequest, sender: SyncSender<Serve
                     .unwrap();
                 client.send_message(message_request).unwrap();
             }
-
             OwnedMessage::Ping(data) => {
                 client.send_message(&OwnedMessage::Pong(data)).unwrap();
             }
-
             OwnedMessage::Text(data) => {
                 let result: ServerResponse = serde_json::from_str(&data.as_str()).unwrap();
                 //result.to_number();
                 sender.send(result).unwrap();
             }
-
             OwnedMessage::Binary(data) => {
                 let result: ServerResponse = serde_json::from_slice(&data).unwrap();
                 //result.to_number();
                 sender.send(result).unwrap();
             }
-
             OwnedMessage::Pong(_) => {}
         }
     }
