@@ -31,8 +31,11 @@ pub fn send_websocket_response(request: &ClientRequest, sender: SyncSender<Serve
     client.send_message(message_request).unwrap();
 
     loop {
+        
         let message = match client.recv_message() {
             Ok(data) => data,
+            //在实际使用过程中，由于网络或者其他不明的服务器原因，会导致client阻塞或者报错，
+            //此处的目的是当出现会导致panic的报错的时候，重新构建链接；
             Err(e) => {
                 println!(
                     "Error happend in send_websocket_response function\nerror: {:?}",
@@ -58,6 +61,7 @@ pub fn send_websocket_response(request: &ClientRequest, sender: SyncSender<Serve
             }
         };
 
+        //根据服务端返回的信息类型处理数据；
         match message {
             OwnedMessage::Close(_) => {
                 client.shutdown().unwrap();
