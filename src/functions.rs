@@ -28,6 +28,7 @@ pub fn send_websocket_response(request: &ClientRequest, sender: SyncSender<Serve
 
     let string_request = serde_json::to_string(request).unwrap();
     let message_request = &OwnedMessage::Text(string_request);
+    let mut result = ServerResponse::new();
     client.send_message(message_request).unwrap();
 
     loop {
@@ -84,13 +85,16 @@ pub fn send_websocket_response(request: &ClientRequest, sender: SyncSender<Serve
             OwnedMessage::Ping(data) => {
                 client.send_message(&OwnedMessage::Pong(data)).unwrap();
             }
+
             OwnedMessage::Text(data) => {
-                let result: ServerResponse = serde_json::from_str(&data.as_str()).unwrap();
+                //String &String 
+                result = serde_json::from_str(&data.as_str()).unwrap();
                 //result.to_number();
                 sender.send(result).unwrap();
             }
+
             OwnedMessage::Binary(data) => {
-                let result: ServerResponse = serde_json::from_slice(&data).unwrap();
+                result  = serde_json::from_slice(&data).unwrap();
                 //result.to_number();
                 sender.send(result).unwrap();
             }

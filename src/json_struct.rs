@@ -113,9 +113,6 @@ pub enum Value {
     Bool(bool),
 }
 
-impl Value{
-}
-
 impl Value {
     //将需要的string类型结果转换为float64类型；
     fn to_float64(&mut self) {
@@ -142,6 +139,33 @@ impl Value {
                 *self = Self::Arrayf64(vec);
             }
             _ => {}
+        }
+    }
+
+    pub fn as_bool(&self) -> Option<bool> {
+        match  *self {
+            Self::Bool(ref data) => Some(*data),
+            _ => None,
+        }
+    }
+
+    pub fn as_arrayf64(&self) -> Option<&Vec<[f64;2]>>{
+        match *self {
+            Self::Arrayf64(ref data) => Some(&*data),
+            _ => None,
+        }
+    }
+
+    pub fn as_array(&self) -> Option<&Vec<[String;2]>>{
+        match *self {
+            Self::Array(ref data) => Some(&*data),
+            _ => None,
+        }
+    }
+    pub fn as_string(&self) -> Option<&String>{
+        match *self {
+            Self::ValueString(ref data) => Some(&*data),
+            _ => None,
         }
     }
 
